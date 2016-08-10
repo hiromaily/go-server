@@ -3,39 +3,54 @@ package main
 import (
 	"fmt"
 	"github.com/gorilla/mux"
+	"math"
 	"net/http"
 	"net/http/pprof"
+	"runtime"
 )
 
-//Go言語でhttpサーバーを立ち上げてHello Worldをする
-//http://qiita.com/taizo/items/bf1ec35a65ad5f608d45
+func setRoute(r *mux.Router) {
+	//r.GET("/", Index)
+	r.HandleFunc("/", Index)
 
-//net/http の動きを少しだけ追ってみた - Golang
-//http://m0t0k1ch1st0ry.com/blog/2014/06/09/golang/
+	//For debug mode or development
+	attachProfiler(r)
+}
 
-//Goでnet/httpを使う時のこまごまとした注意
-//Goでnet/httpを使う時のこまごまとした注意
+func attachProfiler(r *mux.Router) {
+	//r.GET("/debug/pprof/", pprof.Index)
+	//r.GET("/debug/pprof/cmdline", pprof.Cmdline)
+	//r.GET("/debug/pprof/profile", pprof.Profile)
+	//r.GET("/debug/pprof/symbol", pprof.Symbol)
 
-//GoでHTTPサーバを立てる
-//http://qiita.com/kkyouhei/items/8ce72bf997fa353b7646
-
-func AttachProfiler(router *mux.Router) {
-	router.HandleFunc("/debug/pprof/", pprof.Index)
-	router.HandleFunc("/debug/pprof/cmdline", pprof.Cmdline)
-	router.HandleFunc("/debug/pprof/profile", pprof.Profile)
-	router.HandleFunc("/debug/pprof/symbol", pprof.Symbol)
+	r.HandleFunc("/debug/pprof/", pprof.Index)
+	r.HandleFunc("/debug/pprof/cmdline", pprof.Cmdline)
+	r.HandleFunc("/debug/pprof/profile", pprof.Profile)
+	r.HandleFunc("/debug/pprof/symbol", pprof.Symbol)
 
 	// Manually add support for paths linked to by index page at /debug/pprof/
-	router.Handle("/debug/pprof/goroutine", pprof.Handler("goroutine"))
-	router.Handle("/debug/pprof/heap", pprof.Handler("heap"))
-	router.Handle("/debug/pprof/threadcreate", pprof.Handler("threadcreate"))
-	router.Handle("/debug/pprof/block", pprof.Handler("block"))
+	r.Handle("/debug/pprof/goroutine", pprof.Handler("goroutine"))
+	r.Handle("/debug/pprof/heap", pprof.Handler("heap"))
+	r.Handle("/debug/pprof/threadcreate", pprof.Handler("threadcreate"))
+	r.Handle("/debug/pprof/block", pprof.Handler("block"))
 }
-func Handler(w http.ResponseWriter, r *http.Request) {
+
+func Index(w http.ResponseWriter, r *http.Request) {
+	for i := 0; i < 1000000; i++ {
+		math.Pow(36, 89)
+	}
 	fmt.Fprintf(w, "Hello, World")
 }
 
-func main() {
+func setProfile() {
+	//For profiling
+	//runtime.MemProfileRate = 1
+	runtime.SetBlockProfileRate(1)
+
+}
+
+//pattern 1 for handler
+func createMux() *http.ServeMux {
 	//http.HandleFunc("/", handler) // ハンドラを登録してウェブページを表示させる
 	//->DefaultServerMuxと言うものにマッピングが登録される
 	/*
@@ -47,10 +62,29 @@ func main() {
 	//http.ListenAndServe(":8080", nil)
 	//handler が nil のときは、DefaultServeMux が handler として使われる
 
-	r := mux.NewRouter()
-	AttachProfiler(r)
-	r.HandleFunc("/", Handler)
+	//Default Mux
+	mux := http.NewServeMux()
+	mux.Handle("/list", http.HandlerFunc(Index))
+	mux.Handle("/price", http.HandlerFunc(Index))
 
-	http.ListenAndServe(":8080", r)
-	//handler が nil のときは、DefaultServeMux が handler として使われる
+	return mux
+}
+
+//pattern 2 for handler
+func handleFunc() {
+	// HandleFunc registers the handler function for the given pattern
+	// in the DefaultServeMux.
+	// The documentation for ServeMux explains how patterns are matched.
+	http.HandleFunc("/list", Index)
+	http.HandleFunc("/price", Index)
+}
+
+func main() {
+	//For profiling of test
+	setProfile()
+
+	//Setting Server
+	r := mux.NewRouter()
+	setRoute(r)
+	http.ListenAndServe(":9999", r)
 }
