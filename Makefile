@@ -93,6 +93,11 @@ bld:
 ###############################################################################
 # Execution Local
 ###############################################################################
+run:
+	#sudo go run ./cmd/main.go
+	go build -i -v -o ${GOPATH}/bin/goserver ./cmd/
+	sudo goserver
+
 exec:
 	sudo goserver
 
