@@ -3,12 +3,15 @@ package main
 import (
 	"fmt"
 	"github.com/gorilla/mux"
+	h "github.com/hiromaily/go-server/libs/http"
 	"math"
 	"net/http"
-	h "github.com/hiromaily/go-server/http"
 )
 
 func setRoute(r *mux.Router) {
+	//static
+	r.PathPrefix("/statics/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir(dir))))
+
 	//r.GET("/", Index)
 	r.HandleFunc("/", Index)
 
