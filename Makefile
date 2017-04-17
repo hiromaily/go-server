@@ -96,7 +96,8 @@ bld:
 run:
 	#sudo go run ./cmd/main.go
 	go build -i -v -o ${GOPATH}/bin/goserver ./cmd/
-	sudo goserver
+	#sudo goserver
+	goserver
 
 exec:
 	sudo goserver
