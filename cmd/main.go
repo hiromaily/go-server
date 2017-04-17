@@ -15,6 +15,12 @@ var (
 	keyFile  string
 )
 
+var (
+	tomlPath = flag.String("f", "", "Toml file path")
+	portNum  = flag.Int("p", 8080, "Port of server")
+	tsl      = flag.Bool("s", false, "True means to run TSL server")
+)
+
 func init() {
 	flag.Parse()
 
@@ -22,11 +28,13 @@ func init() {
 		"/var/log/go/go-server.log")
 
 	//For TSL
-	//get path executed command
-	pwd, _ := os.Getwd()
+	if *tsl {
+		//get path executed command
+		pwd, _ := os.Getwd()
 
-	certFile, _ = filepath.Abs(pwd + "/ssl/cert.pem")
-	keyFile, _ = filepath.Abs(pwd + "/ssl/key.pem")
+		certFile, _ = filepath.Abs(pwd + "/ssl/cert.pem")
+		keyFile, _ = filepath.Abs(pwd + "/ssl/key.pem")
+	}
 }
 
 func setMiddleware(w *web.Web) {
@@ -49,5 +57,5 @@ func main() {
 	setMiddleware(w)
 	setRoute(w)
 
-	w.StartServer(8080, certFile, keyFile)
+	w.StartServer(*portNum, certFile, keyFile)
 }

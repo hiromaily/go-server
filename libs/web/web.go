@@ -14,10 +14,8 @@ import (
 
 type (
 	Web struct {
-		Mux *http.ServeMux
-		//Router []Router
-		Router map[string][]BHandler
-		//Middleware []http.HandlerFunc
+		Mux        *http.ServeMux
+		Router     map[string][]BHandler
 		Middleware []Middleware
 	}
 	BHandler struct {
@@ -25,20 +23,12 @@ type (
 		Func http.HandlerFunc
 	}
 	Middleware func() mw.Handler
-	//Handler    func(http.ResponseWriter, *http.Request) (http.ResponseWriter, *http.Request)
-	//Handler func(context.Context, http.ResponseWriter, *http.Request) error
-
-	//Router struct {
-	//	Method string
-	//	Path   []string
-	//}
 )
 
 func setProfile() {
 	//For profiling
 	//runtime.MemProfileRate = 1
 	runtime.SetBlockProfileRate(1)
-
 }
 
 func New() *Web {
@@ -55,18 +45,9 @@ func New() *Web {
 	web.Router["OPTIONS"] = nil
 	web.Router["HEAD"] = nil
 
-	//web.Router = append(web.Router, Router{Method: "GET"})
-	//web.Router = append(web.Router, Router{Method: "POST"})
-	//web.Router = append(web.Router, Router{Method: "PUT"})
-	//web.Router = append(web.Router, Router{Method: "PATCH"})
-	//web.Router = append(web.Router, Router{Method: "DELETE"})
-	//web.Router = append(web.Router, Router{Method: "OPTIONS"})
-	//web.Router = append(web.Router, Router{Method: "HEAD"})
-
 	return web
 }
 
-//func (w *Web) Use(f http.HandlerFunc) {
 func (w *Web) Use(m Middleware) {
 	w.Middleware = append(w.Middleware, m)
 }
@@ -87,42 +68,38 @@ func (w *Web) AttachProfiler() {
 }
 
 func (w *Web) Get(path string, f http.HandlerFunc) {
-	//type HandlerFunc func(ResponseWriter, *Request)
 	w.Router["GET"] = append(w.Router["GET"], BHandler{Path: path, Func: f})
 }
 
 func (w *Web) Post(path string, f http.HandlerFunc) {
-	//type HandlerFunc func(ResponseWriter, *Request)
 	w.Router["POST"] = append(w.Router["POST"], BHandler{Path: path, Func: f})
 }
 
 func (w *Web) Put(path string, f http.HandlerFunc) {
-	//type HandlerFunc func(ResponseWriter, *Request)
 	w.Router["PUT"] = append(w.Router["PUT"], BHandler{Path: path, Func: f})
 }
 
 func (w *Web) Patch(path string, f http.HandlerFunc) {
-	//type HandlerFunc func(ResponseWriter, *Request)
 	w.Router["PATCH"] = append(w.Router["PATCH"], BHandler{Path: path, Func: f})
 }
 
 func (w *Web) Delete(path string, f http.HandlerFunc) {
-	//type HandlerFunc func(ResponseWriter, *Request)
 	w.Router["DELETE"] = append(w.Router["DELETE"], BHandler{Path: path, Func: f})
 }
 
 func (w *Web) Options(path string, f http.HandlerFunc) {
-	//type HandlerFunc func(ResponseWriter, *Request)
 	w.Router["OPTIONS"] = append(w.Router["OPTIONS"], BHandler{Path: path, Func: f})
 }
 
 func (w *Web) Head(path string, f http.HandlerFunc) {
-	//type HandlerFunc func(ResponseWriter, *Request)
 	w.Router["HEAD"] = append(w.Router["HEAD"], BHandler{Path: path, Func: f})
 }
 
+// endpoint of router
 func (w *Web) handler(res http.ResponseWriter, req *http.Request) {
 	lg.Debugf("Method:%s, Path:%s", req.Method, req.URL.Path)
+
+	ch := make(chan int, 1)
 
 	//execute middleware
 	rw, r := w.execMiddleware(res, req)
@@ -140,11 +117,10 @@ func (w *Web) handler(res http.ResponseWriter, req *http.Request) {
 		cancel()
 	}()
 
-	//common work for form
+	//
 	r.ParseForm()
 
 	//execute main function
-	ch := make(chan int, 1)
 	go w.execMainFunc(rw, r.WithContext(ctx), ch)
 
 	//contextHandler
@@ -176,12 +152,11 @@ func (w *Web) execMiddleware(res http.ResponseWriter, req *http.Request) (http.R
 func (w *Web) execMainFunc(res http.ResponseWriter, req *http.Request, ch chan<- int) {
 	var flg bool
 	//test
-	time.Sleep(5 * time.Second)
+	//time.Sleep(5 * time.Second)
 	for _, el := range w.Router[req.Method] {
 		if el.Path == req.URL.Path {
 			el.Func(res, req)
 			flg = true
-			//TODO:cancel timeout
 			//send done
 			ch <- 1
 			break
@@ -195,24 +170,27 @@ func (w *Web) execMainFunc(res http.ResponseWriter, req *http.Request, ch chan<-
 	}
 }
 
-//func contextHandler(ctx context.Context, res http.ResponseWriter) {
-//	//
-//	select {
-//	case <-ctx.Done():
-//		err := ctx.Err()
-//		if err == context.Canceled {
-//			fmt.Println("context.Canceled")
-//		} else if err == context.DeadlineExceeded {
-//			fmt.Println("context.DeadlineExceeded")
-//		} else {
-//			fmt.Println("else")
-//		}
-//		id, err := mw.GetRequestID(ctx)
-//		http.Error(res, fmt.Sprintf("[%d] %s", id, err.Error()), http.StatusInternalServerError)
-//	//default:
-//	//	fmt.Println("default")
-//	}
-//}
+// StartServer is to start server with setting handler
+func (w *Web) StartServer(port int, cert, key string) {
+	w.Mux.Handle("/", http.HandlerFunc(w.handler))
+
+	w.listen(port, cert, key)
+}
+
+func (w *Web) listen(port int, cert, key string) {
+	//
+	w.displayPaths()
+
+	if cert != "" && key != "" {
+		lg.Info("TSL Server start with port 443 ...")
+		err := http.ListenAndServeTLS(":443", cert, key, w.Mux)
+		if err != nil {
+			lg.Warn("ListenAndServeTLS:", err)
+		}
+	}
+	lg.Infof("Server start with port %d ...", port)
+	http.ListenAndServe(fmt.Sprintf(":%d", port), w.Mux)
+}
 
 func (w *Web) displayPaths() {
 	var search = func(method string) {
@@ -222,30 +200,9 @@ func (w *Web) displayPaths() {
 	}
 	search("GET")
 	search("POST")
-}
-
-func (w *Web) listen(port int, cert, key string) {
-
-	//
-	w.displayPaths()
-
-	lg.Infof("Server start with port %d ...", port)
-	http.ListenAndServe(fmt.Sprintf(":%d", port), w.Mux)
-
-	//lg.Info("TSL Server start with port 443 ...")
-	//err := http.ListenAndServeTLS(":443", cert, key, w.Mux)
-	//if err != nil {
-	//	lg.Warn("ListenAndServeTLS:", err)
-	//
-	//	lg.Infof("Server start with port %d ...", port)
-	//	http.ListenAndServe(fmt.Sprintf(":%d", port), w.Mux)
-	//}
-}
-
-func (w *Web) StartServer(port int, cert, key string) {
-	//http.HandleFunc("/", w.handler)
-	w.Mux.Handle("/", http.HandlerFunc(w.handler))
-	//w.Mux.HandleFunc("/", mw.Decorate(w.handler))
-
-	w.listen(port, cert, key)
+	search("PUT")
+	search("PATCH")
+	search("DELETE")
+	search("OPTIONS")
+	search("HEAD")
 }
