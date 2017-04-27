@@ -13,5 +13,5 @@ func GetIndex(res http.ResponseWriter, req *http.Request) {
 	//lg.Debugf("[req]%#v\n", req)
 
 	//index
-	tm.Execute(res, req.Context(), "index")
+	tm.Execute(res, "index")
 }
