@@ -47,8 +47,10 @@ func setMiddleware(w *web.Web) {
 func setRoute(w *web.Web) {
 	w.AttachProfiler()
 	w.SetStaticFiles()
+	w.LoadTemplatesFiles()
 	//Add Router
-	w.Get("/", c.Login)
+	w.Get("/", c.GetIndex)
+	w.Get("/login", c.GetLogin)
 }
 
 func main() {
