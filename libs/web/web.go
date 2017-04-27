@@ -3,10 +3,13 @@ package web
 import (
 	"context"
 	"crypto/tls"
+	"errors"
 	"fmt"
 	c "github.com/hiromaily/go-server/controller"
 	mw "github.com/hiromaily/go-server/libs/middleware"
+	fl "github.com/hiromaily/golibs/files"
 	lg "github.com/hiromaily/golibs/log"
+	"html/template"
 	"net/http"
 	"net/http/pprof"
 	"os"
@@ -20,6 +23,7 @@ type (
 		Mux        *http.ServeMux
 		Router     map[string][]BHandler
 		Middleware []Middleware
+		TempFiles  *template.Template
 	}
 	BHandler struct {
 		Path string
@@ -70,6 +74,59 @@ func (w *Web) AttachProfiler() {
 	w.Mux.Handle("/debug/pprof/block", pprof.Handler("block"))
 }
 
+// template FuncMap
+func getTempFunc() template.FuncMap {
+	//type FuncMap map[string]interface{}
+
+	funcMap := template.FuncMap{
+		"add": func(a, b int) int { return a + b },
+		"dict": func(values ...interface{}) (map[string]interface{}, error) {
+			if len(values)%2 != 0 {
+				return nil, errors.New("invalid dict call")
+			}
+			dict := make(map[string]interface{}, len(values)/2)
+			for i := 0; i < len(values); i += 2 {
+				key, ok := values[i].(string)
+				if !ok {
+					return nil, errors.New("dict keys must be strings")
+				}
+				dict[key] = values[i+1]
+			}
+			return dict, nil
+		},
+		"strAry": func(ary []string, i int) string {
+			return ary[i]
+		},
+		"dateFmt": func(t time.Time) string {
+			//fmt := "August 17, 2016 9:51 pm"
+			//fmt := "2006-01-02 15:04:05"
+			//fmt := "Mon Jan _2 15:04:05 2006"
+			fmt := "Mon Jan _2 15:04:05"
+			return t.Format(fmt)
+		},
+	}
+	return funcMap
+}
+
+func (w *Web) LoadTemplatesFiles() {
+	ext := []string{"html"}
+	//
+	pwd, _ := os.Getwd()
+	files := fl.GetFileList(pwd+"/templates/", ext)
+	//lg.Debug("files:", files)
+	//files1 := fl.GetFileList(rootPath+"/templates/pages", ext)
+	//files2 := fl.GetFileList(rootPath+"/templates/components", ext)
+	//files3 := fl.GetFileList(rootPath+"/templates/inner_js", ext)
+	//files := append(append(files1, files2...), files3...)
+
+	//*Template
+	w.TempFiles = template.Must(template.New("").Funcs(getTempFunc()).ParseFiles(files...))
+	//if err := tmpl.ExecuteTemplate(w, "layout", nil); err != nil {
+	//	log.Println(err.Error())
+	//	http.Error(w, http.StatusText(500), 500)
+	//}
+}
+
 func (w *Web) SetStaticFiles() {
 	//static files
 	w.Mux.Handle("/img/", http.StripPrefix("/img/", http.FileServer(http.Dir("./statics/img"))))
@@ -115,6 +172,13 @@ func (w *Web) Head(path string, f http.HandlerFunc) {
 func (w *Web) handler(res http.ResponseWriter, req *http.Request) {
 	lg.Debugf("Method:%s, Path:%s", req.Method, req.URL.Path)
 
+	//TODO:check file path first
+	fn := w.findFunc(req)
+	if fn == nil {
+		c.BadRequest(res, req)
+		return
+	}
+
 	ch := make(chan int, 1)
 
 	//execute middleware
@@ -137,7 +201,11 @@ func (w *Web) handler(res http.ResponseWriter, req *http.Request) {
 	r.ParseForm()
 
 	//execute main function
-	go w.execMainFunc(rw, r.WithContext(ctx), ch)
+	//go w.execMainFunc(rw, r.WithContext(ctx), ch)
+	go func() {
+		fn(rw, r.WithContext(ctx))
+		ch <- 1
+	}()
 
 	//contextHandler
 	select {
@@ -163,6 +231,15 @@ func (w *Web) execMiddleware(res http.ResponseWriter, req *http.Request) (http.R
 		rw, r = f(rw, r)
 	}
 	return rw, r
+}
+
+func (w *Web) findFunc(req *http.Request) http.HandlerFunc {
+	for _, el := range w.Router[req.Method] {
+		if el.Path == req.URL.Path {
+			return el.Func
+		}
+	}
+	return nil
 }
 
 func (w *Web) execMainFunc(res http.ResponseWriter, req *http.Request, ch chan<- int) {
