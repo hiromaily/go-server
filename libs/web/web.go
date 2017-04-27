@@ -7,6 +7,7 @@ import (
 	"fmt"
 	c "github.com/hiromaily/go-server/controller"
 	mw "github.com/hiromaily/go-server/libs/middleware"
+	tm "github.com/hiromaily/go-server/libs/template"
 	fl "github.com/hiromaily/golibs/files"
 	lg "github.com/hiromaily/golibs/log"
 	"html/template"
@@ -197,8 +198,11 @@ func (w *Web) handler(res http.ResponseWriter, req *http.Request) {
 		cancel()
 	}()
 
-	//
+	//parse form
 	r.ParseForm()
+
+	//template
+	ctx = tm.SetTemplate(ctx, w.TempFiles)
 
 	//execute main function
 	//go w.execMainFunc(rw, r.WithContext(ctx), ch)
