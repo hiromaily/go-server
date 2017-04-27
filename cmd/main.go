@@ -4,6 +4,7 @@ import (
 	"flag"
 	c "github.com/hiromaily/go-server/controller"
 	mw "github.com/hiromaily/go-server/libs/middleware"
+	tm "github.com/hiromaily/go-server/libs/template"
 	"github.com/hiromaily/go-server/libs/web"
 	lg "github.com/hiromaily/golibs/log"
 	"os"
@@ -47,7 +48,7 @@ func setMiddleware(w *web.Web) {
 func setRoute(w *web.Web) {
 	w.AttachProfiler()
 	w.SetStaticFiles()
-	w.LoadTemplatesFiles()
+	tm.LoadTemplatesFiles()
 	//Add Router
 	w.Get("/", c.GetIndex)
 	w.Get("/login", c.GetLogin)
