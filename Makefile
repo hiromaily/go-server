@@ -96,14 +96,21 @@ bld:
 run:
 	#sudo go run ./cmd/main.go
 	go build -i -v -o ${GOPATH}/bin/goserver ./cmd/
-	#sudo goserver
 	goserver
 
+run2:
+	#sudo go run ./cmd/main.go
+	go build -i -v -o ${GOPATH}/bin/goserver ./cmd/
+	sudo goserver -s true
+
 exec:
-	sudo goserver
+	goserver
+
+exec2:
+	sudo goserver -s true
 
 # https://localhost/
-
+# https://localhost:8080/
 
 ###############################################################################
 # Clean

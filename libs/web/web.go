@@ -2,12 +2,15 @@ package web
 
 import (
 	"context"
+	"crypto/tls"
 	"fmt"
 	c "github.com/hiromaily/go-server/controller"
 	mw "github.com/hiromaily/go-server/libs/middleware"
 	lg "github.com/hiromaily/golibs/log"
 	"net/http"
 	"net/http/pprof"
+	"os"
+	"os/signal"
 	"runtime"
 	"time"
 )
@@ -65,6 +68,19 @@ func (w *Web) AttachProfiler() {
 	w.Mux.Handle("/debug/pprof/heap", pprof.Handler("heap"))
 	w.Mux.Handle("/debug/pprof/threadcreate", pprof.Handler("threadcreate"))
 	w.Mux.Handle("/debug/pprof/block", pprof.Handler("block"))
+}
+
+func (w *Web) SetStaticFiles() {
+	//static files
+	w.Mux.Handle("/img/", http.StripPrefix("/img/", http.FileServer(http.Dir("./statics/img"))))
+	w.Mux.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("./statics/css"))))
+	w.Mux.Handle("/js/", http.StripPrefix("/js/", http.FileServer(http.Dir("./statics/js"))))
+	w.Mux.HandleFunc("/favicon.ico", faviconHandler)
+}
+
+func faviconHandler(w http.ResponseWriter, r *http.Request) {
+	lg.Debug("[]favicon.ico was requested")
+	http.ServeFile(w, r, "./statics/favicon.ico")
 }
 
 func (w *Web) Get(path string, f http.HandlerFunc) {
@@ -174,7 +190,20 @@ func (w *Web) execMainFunc(res http.ResponseWriter, req *http.Request, ch chan<-
 func (w *Web) StartServer(port int, cert, key string) {
 	w.Mux.Handle("/", http.HandlerFunc(w.handler))
 
-	w.listen(port, cert, key)
+	w.listen2(port, cert, key)
+}
+
+func getTlsConf(cert, key string) (*tls.Config, error) {
+	if cert == "" || key == "" {
+		return nil, fmt.Errorf("%s", "parameters are invalid.")
+	}
+
+	cer, err := tls.LoadX509KeyPair(cert, key)
+	if err != nil {
+		return nil, err
+	}
+	tlsConf := tls.Config{Certificates: []tls.Certificate{cer}}
+	return &tlsConf, nil
 }
 
 func (w *Web) listen(port int, cert, key string) {
@@ -190,6 +219,45 @@ func (w *Web) listen(port int, cert, key string) {
 	}
 	lg.Infof("Server start with port %d ...", port)
 	http.ListenAndServe(fmt.Sprintf(":%d", port), w.Mux)
+}
+
+func (w *Web) listen2(port int, cert, key string) {
+	stopChan := make(chan os.Signal)
+	signal.Notify(stopChan, os.Interrupt)
+
+	//
+	w.displayPaths()
+
+	//server object
+	var srv *http.Server
+	conf, err := getTlsConf(cert, key)
+	if err != nil {
+		srv = &http.Server{Addr: fmt.Sprintf(":%d", port), Handler: w.Mux}
+		lg.Infof("Server start with port %d ...", port)
+		go func() {
+			// service connections
+			if err := srv.ListenAndServe(); err != nil {
+				lg.Errorf("listen: %s\n", err)
+			}
+		}()
+	} else {
+		srv = &http.Server{Addr: fmt.Sprintf(":%d", port), Handler: w.Mux, TLSConfig: conf}
+		lg.Info("TSL Server start with port 443 ...")
+		go func() {
+			err := srv.ListenAndServeTLS("", "")
+			if err != nil {
+				lg.Warn("ListenAndServeTLS:", err)
+			}
+		}()
+	}
+
+	<-stopChan // wait for SIGINT
+	lg.Info("Shutting down server...")
+
+	// shut down gracefully, but wait no longer than 5 seconds before halting
+	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	srv.Shutdown(ctx)
+	lg.Info("Server gracefully stopped")
 }
 
 func (w *Web) displayPaths() {
