@@ -7,8 +7,6 @@ import (
 	"net/http"
 )
 
-type key int
-
 const requestIDKey = key(42)
 
 func GetRequestID(ctx context.Context) (int64, error) {

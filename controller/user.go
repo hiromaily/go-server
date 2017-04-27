@@ -12,6 +12,5 @@ func GetLogin(res http.ResponseWriter, req *http.Request) {
 	lg.Debugf("[req]%+v\n", req)
 
 	fmt.Fprintf(res, "User Login")
-
 	//ctx := req.Context()
 }
