@@ -93,7 +93,6 @@ func setRoute(w *web.Web) {
 }
 
 func main() {
-
 	//For profiling of test
 	w := web.New()
 
