@@ -1,5 +1,5 @@
 .DS_Store
 .idea/
 server
-ssl/*
+data/ssl/*
 !.gitkeep

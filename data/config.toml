@@ -1,0 +1,58 @@
+#local, heroku, docker, staging, production
+environment = "local"
+
+[server]
+scheme = "http"
+host = "localhost"
+port = 8080
+
+[server.log]
+level = 1
+path = "/var/log/go/go-server.log"
+
+[server.session]
+name = "go-server"
+key = "secretskey123456"
+max_age =  300     #(s)
+secure = false    #set false in development environment, production environment requires true
+http_only = true
+
+[server.basic_auth]
+user = "web"
+pass = "test"
+
+[api]
+only_ajax = true
+
+[api.cors]
+enabled = true
+origins = ["localhost:8000"]
+headers = ["Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization"]
+methods = ["GET", "OPTIONS"]
+credentials = false
+
+[api.header]
+enabled = true
+header = "X-Server"
+key = "key12345"
+
+[api.jwt]
+mode = 2   #0:off, 1:HMAC, 2:RSA
+secret_code = ""
+private_key = "/Users/hy/.ssh/jwt_rsa"
+public_key = "/Users/hy/.ssh/jwt_rsa.pub"
+
+[mysql]
+encrypted = false
+host = "localhost"
+port = 3306
+dbname = "maindb"
+user = "testuser"
+pass = "12345678"
+
+[redis]
+encrypted = false
+host = "localhost"
+port = 6379
+pass = ""
+session = false

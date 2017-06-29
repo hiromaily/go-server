@@ -4,7 +4,7 @@ import (
 	"context"
 	"crypto/tls"
 	"fmt"
-	c "github.com/hiromaily/go-server/controller"
+	c "github.com/hiromaily/go-server/libs/controller"
 	mw "github.com/hiromaily/go-server/libs/middleware"
 	lg "github.com/hiromaily/golibs/log"
 	"net/http"
@@ -20,7 +20,6 @@ type (
 		Mux        *http.ServeMux
 		Router     map[string][]BHandler
 		Middleware []Middleware
-		//TempFiles  *template.Template
 	}
 	BHandler struct {
 		Path string
@@ -143,7 +142,7 @@ func (w *Web) handler(res http.ResponseWriter, req *http.Request) {
 
 	//parse form
 	r.ParseForm()
-	
+
 	//execute main function
 	//go w.execMainFunc(rw, r.WithContext(ctx), ch)
 	go func() {
@@ -276,6 +275,7 @@ func (w *Web) listen2(port int, cert, key string) {
 	lg.Info("Shutting down server...")
 
 	// shut down gracefully, but wait no longer than 5 seconds before halting
+	//TODO:the cancel function returned by context.WithTimeout should be called, not discarded, to avoid a context leak
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
 	srv.Shutdown(ctx)
 	lg.Info("Server gracefully stopped")

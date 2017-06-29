@@ -80,7 +80,8 @@ chk:
 # Build Local
 ###############################################################################
 keygen:
-	sudo go run /usr/local/Cellar/go/1.8/libexec/src/crypto/tls/generate_cert.go --host hy
+	sudo go run ${GOROOT}/src/crypto/tls/generate_cert.go --host hy
+	#sudo go run /usr/local/Cellar/go/1.8/libexec/src/crypto/tls/generate_cert.go --host hy
 
 
 ###############################################################################
