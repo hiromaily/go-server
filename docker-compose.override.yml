@@ -6,10 +6,6 @@ services:
     environment:
       CGO_ENABLED: 0
       GOOS: linux
-#    links:
-#      - headless
-#    depends_on:
-#      - headless
     ports:
       - "${API_PORT:-8080}:80"
     volumes:
@@ -29,3 +25,19 @@ services:
     container_name: chrome-headless
     ports:
       - "${HEADLESS_PORT:-9222}:9222"
+
+  devtool:
+    build:
+      context: ./chrome_devtools/
+      dockerfile: Dockerfile
+    image: 'devtool:${IMAGE_TAG:-1.0}'
+    container_name: devtool
+    links:
+      - headless:chrome-headless
+      - web
+    depends_on:
+      - headless
+      - web
+    stdin_open: true
+    tty: true
+    command: bash

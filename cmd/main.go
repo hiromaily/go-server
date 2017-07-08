@@ -52,7 +52,7 @@ func init() {
 		cnf.Server.Log.Path)
 
 	//For TSL
-	if *tsl != 0{
+	if *tsl != 0 {
 		//get path executed command
 		pwd, _ := os.Getwd()
 

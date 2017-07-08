@@ -102,6 +102,14 @@ exec:
 exec2:
 	sudo goserver -tsl 1
 
+
+devtoolin:
+	docker exec -it devtool bash
+
+devtool:
+	docker exec -it devtool bash -c "devtool -d localhost"
+
+
 # https://localhost/
 # https://localhost:8080/
 
