@@ -35,7 +35,7 @@ var (
 var (
 	tomlPath = flag.String("f", "", "Toml file path")
 	portNum  = flag.Int("p", 8080, "Port of server")
-	tsl      = flag.Bool("s", false, "True means to run TSL server")
+	tsl      = flag.Int("tsl", 0, "`1` means to run TSL server")
 )
 
 func init() {
@@ -52,13 +52,18 @@ func init() {
 		cnf.Server.Log.Path)
 
 	//For TSL
-	if *tsl {
+	if *tsl != 0{
 		//get path executed command
 		pwd, _ := os.Getwd()
 
 		certFile, _ = filepath.Abs(pwd + "/data/ssl/cert.pem")
 		keyFile, _ = filepath.Abs(pwd + "/data/ssl/key.pem")
 	}
+
+	//TODO:debug, please remove it after debugging
+	lg.Debugf("portNum is %d", *portNum)
+	lg.Debugf("tomlPath is %s", *tomlPath)
+	lg.Debugf("tsl is %d", *tsl)
 }
 
 func initAuth() {

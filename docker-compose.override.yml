@@ -1,0 +1,31 @@
+version: '3.0'
+services:
+  web:
+    image: 'go-server:${IMAGE_TAG:-1.0}'
+    container_name: go-server
+    environment:
+      CGO_ENABLED: 0
+      GOOS: linux
+#    links:
+#      - headless
+#    depends_on:
+#      - headless
+    ports:
+      - "${API_PORT:-8080}:80"
+    volumes:
+      - ./ssl:/go/src/github.com/hiromaily/go-server/ssl
+      - ./runner.conf:/go/src/github.com/hiromaily/go-server/runner.conf
+      - ./cmd:/go/src/github.com/hiromaily/go-server/cmd
+      - ./controller:/go/src/github.com/hiromaily/go-server/controller
+      - ./libs:/go/src/github.com/hiromaily/go-server/libs
+      - ./templates:/go/src/github.com/hiromaily/go-server/templates
+    stdin_open: true
+    tty: true
+    restart: always
+    command: fresh -c /go/src/github.com/hiromaily/go-server/runner.conf
+
+  headless:
+    image: 'knqz/chrome-headless'
+    container_name: chrome-headless
+    ports:
+      - "${HEADLESS_PORT:-9222}:9222"

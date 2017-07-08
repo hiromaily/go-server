@@ -1,30 +1,6 @@
 # Note: tabs by space can't not used for Makefile!
 
 ###############################################################################
-# Docker
-###############################################################################
-up:
-	docker-compose up
-
-up2:
-	#This doesn't work yet.
-	# API
-	docker exec -it gonats_api_1 bash -c "go get -d -v"
-	docker exec -it gonats_api_1 bash -c "go build -o /go/bin/api main.go"
-	#docker exec -it gonats_api_1 bash -c "kill -HUP 1"
-
-	# WORKER
-	docker exec -it gonats_worker_1 bash -c "go get -d -v"
-	docker exec -it gonats_worker_1 bash -c "go build -o /go/bin/worker main.go"
-	#docker exec -it gonats_worker_1 bash -c "kill -HUP 1"
-
-up_product:
-	docker-compose -f docker-compose.yml up
-
-dcbld:
-	docker-compose build --no-cache
-
-###############################################################################
 # PKG Dependencies
 ###############################################################################
 update:
@@ -77,6 +53,22 @@ chk:
 
 
 ###############################################################################
+# Docker
+###############################################################################
+up:
+	docker-compose up
+
+serverin:
+	docker exec -it go-server bash -c "echo ${GOROOT}"
+
+up_product:
+	docker-compose -f docker-compose.yml up
+
+dcbld:
+	docker-compose build --no-cache
+
+
+###############################################################################
 # Build Local
 ###############################################################################
 keygen:
@@ -97,18 +89,18 @@ bld:
 run:
 	#sudo go run ./cmd/main.go
 	go build -i -v -o ${GOPATH}/bin/goserver ./cmd/
-	goserver
+	goserver -p 8081 -f data/config.toml
 
 run2:
 	#sudo go run ./cmd/main.go
 	go build -i -v -o ${GOPATH}/bin/goserver ./cmd/
-	sudo goserver -s true
+	sudo goserver -tsl 1
 
 exec:
 	goserver
 
 exec2:
-	sudo goserver -s true
+	sudo goserver -tsl 1
 
 # https://localhost/
 # https://localhost:8080/

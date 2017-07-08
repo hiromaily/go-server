@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"context"
 	"errors"
 	"github.com/hiromaily/golibs/auth/jwt"
 	lg "github.com/hiromaily/golibs/log"
@@ -52,8 +51,3 @@ func CheckJWT() Handler {
 		return w, r
 	}
 }
-
-//
-//func ValidationJWT() error {
-//
-//}
