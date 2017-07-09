@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-type Params struct{
+type Params struct {
 	Str1   string
 	Int1   int
 	Bool1  bool

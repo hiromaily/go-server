@@ -4,12 +4,15 @@ FROM golang:1.8
 
 RUN apt-get -y update && apt-get install -y wget
 
-RUN mkdir -p /workspace && mkdir -p /tmp/webdrive/images
-WORKDIR /workspace
+RUN mkdir -p /workspace/images
+RUN mkdir -p /go/src/github.com/hiromaily/go-server/chrome_devtools
+
+WORKDIR /go/src/github.com/hiromaily/go-server/chrome_devtools
+
+COPY main.go .
+COPY pages/ ./pages/
 
 #RUN go get -u github.com/knq/chromedp
-COPY main.go .
-
 RUN go get -d -v
 RUN CGO_ENABLED=0 GOOS=linux go build -o /go/bin/devtool ./main.go
 

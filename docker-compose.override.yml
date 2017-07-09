@@ -1,4 +1,8 @@
 version: '3.0'
+
+#volumes:
+#  data: {}
+
 services:
   web:
     image: 'go-server:${IMAGE_TAG:-1.0}'
@@ -9,7 +13,7 @@ services:
     ports:
       - "${API_PORT:-8080}:80"
     volumes:
-      - ./ssl:/go/src/github.com/hiromaily/go-server/ssl
+      - ./data/ssl:/go/src/github.com/hiromaily/go-server/data/ssl
       - ./runner.conf:/go/src/github.com/hiromaily/go-server/runner.conf
       - ./cmd:/go/src/github.com/hiromaily/go-server/cmd
       - ./controller:/go/src/github.com/hiromaily/go-server/controller
@@ -33,6 +37,9 @@ services:
       dockerfile: Dockerfile
     image: 'devtool:${IMAGE_TAG:-1.0}'
     container_name: devtool
+    volumes:
+      #- ./data/images:/workspace/images
+      - ./chrome_devtools:/go/src/github.com/hiromaily/go-server/chrome_devtools
     links:
       - headless:chrome-headless
       - web

@@ -1,5 +1,6 @@
 .DS_Store
 .idea/
 server
-ssl/*
-!.gitkeep
+data/ssl/*
+!data/ssl/.gitkeep
+chrome_devtools/images/*.png

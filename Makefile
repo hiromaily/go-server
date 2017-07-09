@@ -86,6 +86,9 @@ keygen:
 bld:
 	go build -i -v -o ${GOPATH}/bin/goserver ./cmd/
 
+bld2:
+	go build -i -v -o ${GOPATH}/bin/devtool ./chrome_devtools/
+
 
 ###############################################################################
 # Execution Local
@@ -101,18 +104,23 @@ run2:
 	sudo goserver -tsl 1
 
 exec:
-	goserver
+	goserver -p 8080
 
 exec2:
 	sudo goserver -tsl 1
 
 
+###############################################################################
+# Build on Docker
+###############################################################################
+devtool:
+	docker exec -it devtool bash -c "devtool -d headless -n localhost -h chrome-headless"
+
+devtoolbld:
+	docker exec -it devtool bash -c "CGO_ENABLED=0 GOOS=linux go build -o /go/bin/devtool ./main.go"
+
 devtoolin:
 	docker exec -it devtool bash
-
-devtool:
-	docker exec -it devtool bash -c "devtool -d localhost"
-
 
 # https://localhost/
 # https://localhost:8080/
