@@ -15,6 +15,7 @@ services:
       - ./controller:/go/src/github.com/hiromaily/go-server/controller
       - ./libs:/go/src/github.com/hiromaily/go-server/libs
       - ./templates:/go/src/github.com/hiromaily/go-server/templates
+      - ./statics:/go/src/github.com/hiromaily/go-server/statics
     stdin_open: true
     tty: true
     restart: always

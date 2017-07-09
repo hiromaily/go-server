@@ -54,11 +54,9 @@ func LoadTemplatesFiles() {
 	//
 	pwd, _ := os.Getwd()
 	files := fl.GetFileList(pwd+"/templates/", ext)
-	//lg.Debug("files:", files)
-	//files1 := fl.GetFileList(rootPath+"/templates/pages", ext)
-	//files2 := fl.GetFileList(rootPath+"/templates/components", ext)
-	//files3 := fl.GetFileList(rootPath+"/templates/inner_js", ext)
+	//files2 := fl.GetFileList(pwd+"/submodules/global", ext)
 	//files := append(append(files1, files2...), files3...)
+	//files := append(files1, files2...)
 
 	//*Template
 	tempFiles = template.Must(template.New("").Funcs(getTempFunc()).ParseFiles(files...))
@@ -81,9 +79,9 @@ func LoadTemplatesFiles() {
 //	return ctx
 //}
 
-func Execute(res http.ResponseWriter, key string) {
+func Execute(res http.ResponseWriter, key string, data interface{}) {
 	if tempFiles != nil {
-		err := tempFiles.ExecuteTemplate(res, key, nil)
+		err := tempFiles.ExecuteTemplate(res, key, data)
 		if err != nil {
 			lg.Error(err.Error())
 			http.Error(res, http.StatusText(500), 500)

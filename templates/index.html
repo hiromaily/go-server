@@ -9,8 +9,12 @@
 <body>
 <div id="body">
   <h4>index.html</h4>
-    <p>test test test </p>
-    <p>test test test </p>
+    <p>test string: {{.Str1}}</p>
+    <p>test int: {{.Int1}}</p>
+    <p>test bool: {{.Bool1}}</p>
+    {{range .Slice1}}
+      <p>test slice: {{.}}</p>
+    {{end}}
     <button id= "btn1" name="button">Click me</button>
 </div>
 </body>

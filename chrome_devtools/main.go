@@ -158,7 +158,7 @@ func checkLocal(site, res *string) cdp.Tasks {
 	//sel := fmt.Sprintf(`//a[text()[contains(., '%s')]]`, text)
 	return cdp.Tasks{
 		//1.TOP
-		cdp.Navigate(`http://web`),
+		cdp.Navigate(`http://web/global`),
 		cdp.Sleep(10 * time.Second),
 		cdp.WaitVisible(`#body`, cdp.ByID),
 

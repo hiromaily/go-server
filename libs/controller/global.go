@@ -8,10 +8,10 @@ import (
 )
 
 //GET
-func GetIndex(res http.ResponseWriter, req *http.Request) {
-	fmt.Println("[Index]")
+func GetGlobal(res http.ResponseWriter, req *http.Request) {
+	fmt.Println("[Global]")
 	//lg.Debugf("[req]%#v\n", req)
 
 	//index
-	tm.Execute(res, "index")
+	tm.Execute(res, "global", nil)
 }

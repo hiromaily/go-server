@@ -69,11 +69,15 @@ dcbld:
 
 
 ###############################################################################
-# Build Local
+# Initial Settings
 ###############################################################################
 keygen:
 	sudo go run ${GOROOT}/src/crypto/tls/generate_cert.go --host hy
 	#sudo go run /usr/local/Cellar/go/1.8/libexec/src/crypto/tls/generate_cert.go --host hy
+
+#submodule:
+#    git submodule add https://github.com/BuckyMaler/global.git submodules/global
+#	#ln -s ${GOPATH}/src/github.com/hiromaily/go-goa/goa/swagger ./public/swagger
 
 
 ###############################################################################
@@ -89,7 +93,7 @@ bld:
 run:
 	#sudo go run ./cmd/main.go
 	go build -i -v -o ${GOPATH}/bin/goserver ./cmd/
-	goserver -p 8081 -f data/config.toml
+	goserver -p 8080 -f data/config.toml
 
 run2:
 	#sudo go run ./cmd/main.go

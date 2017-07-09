@@ -75,6 +75,7 @@ func (w *Web) SetStaticFiles() {
 	w.Mux.Handle("/img/", http.StripPrefix("/img/", http.FileServer(http.Dir("./statics/img"))))
 	w.Mux.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("./statics/css"))))
 	w.Mux.Handle("/js/", http.StripPrefix("/js/", http.FileServer(http.Dir("./statics/js"))))
+
 	w.Mux.HandleFunc("/favicon.ico", faviconHandler)
 }
 

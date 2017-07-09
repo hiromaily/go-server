@@ -92,9 +92,12 @@ func setRoute(w *web.Web) {
 	w.AttachProfiler()
 	w.SetStaticFiles()
 	tm.LoadTemplatesFiles()
+
 	//Add Router
 	w.Get("/", c.GetIndex)
+	w.Get("/index", c.GetIndex)
 	w.Get("/login", c.GetLogin)
+	w.Get("/global", c.GetGlobal)
 }
 
 func main() {
