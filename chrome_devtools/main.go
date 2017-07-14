@@ -64,7 +64,7 @@ func main() {
 		tm.Track(time.Now(), "main()")
 	}()
 
-	lg.Infof("driver: %s / testName: %s / headlessHosst: %s ======================", *driverName, *testName, *headlessHost)
+	lg.Infof("driver: %s / testName: %s / headlessHost: %s ======================", *driverName, *testName, *headlessHost)
 
 	c, err := createCDP(ctxt)
 	if err != nil {
