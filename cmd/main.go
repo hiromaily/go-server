@@ -98,6 +98,7 @@ func setRoute(w *web.Web) {
 	w.Get("/index", c.GetIndex)
 	w.Get("/login", c.GetLogin)
 	w.Get("/global", c.GetGlobal)
+	w.Get("/webpush", c.GetWebPush)
 }
 
 func main() {
