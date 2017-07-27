@@ -8,10 +8,13 @@ import (
 )
 
 type Params struct {
-	Str1   string
-	Int1   int
-	Bool1  bool
-	Slice1 []string
+	Title     string
+	LinkNames []Link
+}
+
+type Link struct {
+	Name string
+	Url  string
 }
 
 //GET
@@ -19,7 +22,15 @@ func GetIndex(res http.ResponseWriter, req *http.Request) {
 	fmt.Println("[Index]")
 	//lg.Debugf("[req]%#v\n", req)
 
-	data := Params{Str1: "test", Int1: 100, Bool1: false, Slice1: []string{"aaa", "bbb", "ccc"}}
+	data := Params{
+		Title: "TitleIndex",
+		LinkNames: []Link{
+			Link{"index", "/"},
+			Link{"login", "/login"},
+			Link{"global", "/global"},
+			Link{"webpush", "/webpush"},
+		},
+	}
 
 	//index
 	tm.Execute(res, "index", &data)

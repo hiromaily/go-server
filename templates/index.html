@@ -2,21 +2,65 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>index</title>
+    <!-- Standard Meta -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    <!-- Site Properties -->
+    <title>Bootstrap - Semantic</title>
+    <link rel="stylesheet" type="text/css" href="css/semantic.css">
 </head>
 <body>
-<div id="body">
-  <h4>index.html</h4>
-    <p>test string: {{.Str1}}</p>
-    <p>test int: {{.Int1}}</p>
-    <p>test bool: {{.Bool1}}</p>
-    {{range .Slice1}}
-      <p>test slice: {{.}}</p>
-    {{end}}
-    <button id= "btn1" name="button">Click me</button>
+
+<div class="ui grid container">
+    <div class="row">
+        <div class="column">
+            <h1 class="ui header">{{.Title}}</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <div class="ui message">
+                <h1 class="ui header">Hello, world!</h1>
+                <p>This is a template for a simple marketing or informational website.</p>
+                <a class="ui blue button">Learn more &raquo;</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="column">
+            <div class="ui relaxed divided list">
+            {{range .LinkNames}}
+                <div class="item">
+                    <i class="large github middle aligned icon"></i>
+                    <div class="content">
+                        <a class="header" href="{{.Url}}">{{.Name}}</a>
+                        <div class="description">Updated 15 mins ago</div>
+                    </div>
+                </div>
+            {{end}}
+            </div>
+
+        </div>
+    </div>
+
 </div>
+
+<script src="js/jquery.min.js"></script>
+<script>
+    $(document)
+        .ready(function() {
+            $('.ui.selection.dropdown').dropdown();
+            $('.ui.menu .ui.dropdown').dropdown({
+                on: 'hover'
+            });
+        })
+    ;
+</script>
+<script src="js/semantic.js"></script>
 </body>
+
 </html>
 {{end}}
