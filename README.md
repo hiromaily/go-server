@@ -8,6 +8,7 @@
 
 web framework including http/2 functionalities.
 
+
 ## Installation
 ```
 $ go get github.com/hiromaily/go-server ./...
@@ -16,6 +17,7 @@ $ docker-compose build
 $ docker-compose up
 
 ```
+
 
 ## Docker Container Composition
 ### 1.web
@@ -27,4 +29,10 @@ Headless Chromium is used for end to end testing.
 
 ### 3.devtool
 This is test code using [chromedp](https://github.com/knq/chromedp) on headless Chromium
+
+
+## Web
+### functionality
+* http/2 based
+* Web Push Notifications
 
