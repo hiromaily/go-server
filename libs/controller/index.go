@@ -27,8 +27,8 @@ func GetIndex(res http.ResponseWriter, req *http.Request) {
 		LinkNames: []Link{
 			Link{"index", "/"},
 			Link{"login", "/login"},
-			Link{"global", "/global"},
 			Link{"webpush", "/webpush"},
+			Link{"global", "/global"},
 		},
 	}
 
