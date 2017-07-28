@@ -42,6 +42,10 @@ secret_code = ""
 private_key = "/Users/hy/.ssh/jwt_rsa"
 public_key = "/Users/hy/.ssh/jwt_rsa.pub"
 
+[webpush]
+encrypted = true
+private_key = "KbWk+GTmZBcxsL/DC/C5tsqnW7fbWaUVQCqQKsVrlZDIhxIILG7YMd3QWSncKIPR"
+
 [mysql]
 encrypted = false
 host = "localhost"

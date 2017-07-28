@@ -21,7 +21,7 @@
 
 'use strict';
 
-// TODO: it's better to get from server side
+// TODO: is it better to get from server side??
 const applicationServerPublicKey = 'BPl9ehqB6P27pIOGrzxp4Z5trdMmn1yvHeqbb4g-Q5SHyUhmK3CsCe9gU1QgxfFvbIQcTx-sc1ldYuhIAzGHZgQ';
 
 const pushButton = document.querySelector('.js-push-btn');
@@ -50,7 +50,7 @@ function initialiseUI() {
     pushButton.addEventListener('click', function() {
         pushButton.disabled = true;
         if (isSubscribed) {
-            // TODO: Unsubscribe user
+            unsubscribeUser();
         } else {
             subscribeUser();
         }
@@ -62,7 +62,8 @@ function initialiseUI() {
             // subscription includes json data
             isSubscribed = !(subscription === null);
 
-            updateSubscriptionOnServer(subscription);
+            // commented out
+            //updateSubscriptionOnServer(subscription);
 
             if (isSubscribed) {
                 console.log('User IS subscribed.');
@@ -99,11 +100,73 @@ function subscribeUser() {
         });
 }
 
+// Cancel user
+function unsubscribeUser() {
+    swRegistration.pushManager.getSubscription()
+        .then(function(subscription) {
+            if (subscription) {
+                return subscription.unsubscribe();
+            }
+        })
+        .catch(function(error) {
+            console.log('Error unsubscribing', error);
+        })
+        .then(function() {
+            updateSubscriptionOnServer(null);
+
+            console.log('User is unsubscribed.');
+            isSubscribed = false;
+
+            updateBtn();
+        });
+}
+
 function updateSubscriptionOnServer(subscription) {
+    console.log("subscription:", subscription);
+
     // subscription includes json data
     // TODO: Send subscription to application server
+    var data = {
+        subscription: subscription,
+        applicationKeys: {
+            public: applicationServerPublicKey
+        },
+        data: ""
+    };
+    // {
+    //     "endpoint": "https://fcm.googleapis.com/fcm/send/f_MHxDW6_8k:APA91bH998LbUYtT5Yjrr8NJak1liATortCgdN6EkshW7USjt8dUUpnf0ugVtLO7t35BbOStkHMMfKLad_-ndIdaVmg8dh7DQTk3kpJij4iA3aTRJwYey6v2PVfk3dsgW1gjRHYSSWsP",
+    //     "expirationTime": null,
+    //     "keys": {
+    //         "p256dh": "BLt6u6ZEiqBK4-acClEFLjPZ4fvAT2Oo0nkpgKsiOxVYh95s8ODcJy7HJxOKbDq1RYypuO5ZbIzcMBQMOiaQFag=",
+    //         "auth": "AZsanxKT5TnP1crxsE17_w=="
+    //     }
+    // }
 
-    // display subscription (below code is not important)
+    console.log(JSON.stringify(data));
+
+    console.log('call fetch()');
+    fetch("/webpush",
+        {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: JSON.stringify(data)
+        })
+        .then(function(res){
+            console.log(res);
+            displaySubscription(subscription);
+        })
+        .catch(function(res){ console.log(res) })
+
+    //
+    //displaySubscription(subscription)
+}
+
+// display subscription (below code is not important)
+function displaySubscription(subscription) {
+    console.log("displaySubscription()")
     const subscriptionJson = document.querySelector('.js-subscription-json');
     const subscriptionDetails =
         document.querySelector('.js-subscription-details');
@@ -140,8 +203,9 @@ function updateBtn() {
 if ('serviceWorker' in navigator && 'PushManager' in window) {
     console.log('Service Worker and Push is supported');
 
-    //TODO:path
-    navigator.serviceWorker.register('js/webpush/sw.js')
+
+
+    navigator.serviceWorker.register('js/webpush/sw.js?ts=' + Date.now())
         .then(function(swReg) {
             console.log('Service Worker is registered', swReg);
 

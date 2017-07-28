@@ -94,7 +94,7 @@ bld2:
 # Execution Local
 ###############################################################################
 run:
-	go run ./cmd/main.go -p 8080 -f data/config.toml
+	go run ./cmd/main.go -p 8080 -f ./data/config.toml
 	#go build -i -v -o ${GOPATH}/bin/goserver ./cmd/
 	#goserver -p 8080 -f data/config.toml
 

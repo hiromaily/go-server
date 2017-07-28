@@ -22,6 +22,7 @@ type Config struct {
 	Server      *ServerConfig
 	Proxy       ProxyConfig
 	API         *APIConfig
+	WebPush     WebpushConfig
 	MySQL       *MySQLConfig
 	Redis       *RedisConfig
 }
@@ -104,6 +105,12 @@ type JWTConfig struct {
 	PublicKey  string `toml:"public_key"`
 }
 
+// WebpushConfig is for Redis Server
+type WebpushConfig struct {
+	Encrypted  bool   `toml:"encrypted"`
+	PrivateKey string `toml:"private_key"`
+}
+
 // MySQLConfig is for MySQL Server
 type MySQLConfig struct {
 	*MySQLContentConfig
@@ -155,6 +162,8 @@ var checkTOMLKeys = [][]string{
 	{"api", "jwt", "secret_code"},
 	{"api", "jwt", "private_key"},
 	{"api", "jwt", "public_key"},
+	{"webpush", "encrypted"},
+	{"webpush", "private_key"},
 	{"mysql", "encrypted"},
 	{"mysql", "host"},
 	{"mysql", "port"},
@@ -283,6 +292,10 @@ func SetTOMLPath(path string) {
 // Cipher is to decrypt crypted string on config
 func Cipher() {
 	crypt := enc.GetCrypt()
+
+	if conf.WebPush.Encrypted {
+		conf.WebPush.PrivateKey, _ = crypt.DecryptBase64(conf.WebPush.PrivateKey)
+	}
 
 	if conf.MySQL.Encrypted {
 		c := conf.MySQL

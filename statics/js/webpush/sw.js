@@ -29,9 +29,9 @@ self.addEventListener('push', function(event) {
 
     const title = 'Push Title';
     const options = {
-        body: 'This is from body.',
-        icon: 'img/webpush/icon.png',
-        badge: 'img/webpush/badge.png' // For only Android??
+        body: event.data.text(),
+        icon: '/img/webpush/icon.png',
+        badge: '/img/webpush/badge.png' // For only Android??
     };
 
     // create notification
