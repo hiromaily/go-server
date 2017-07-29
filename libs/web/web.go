@@ -13,6 +13,9 @@ import (
 	"os/signal"
 	"runtime"
 	"time"
+
+	"github.com/alexedwards/scs/engine/memstore"
+	"github.com/alexedwards/scs/session"
 )
 
 type (
@@ -249,11 +252,16 @@ func (w *Web) listen2(port int, cert, key string) {
 	//
 	w.displayPaths()
 
+	// session
+	engine := memstore.New(0)
+	sessionManager := session.Manage(engine)
+
 	//server object
 	var srv *http.Server
 	conf, err := getTlsConf(cert, key)
 	if err != nil {
-		srv = &http.Server{Addr: fmt.Sprintf(":%d", port), Handler: w.Mux}
+		//srv = &http.Server{Addr: fmt.Sprintf(":%d", port), Handler: w.Mux}
+		srv = &http.Server{Addr: fmt.Sprintf(":%d", port), Handler: sessionManager(w.Mux)}
 		lg.Infof("Server start with port %d ...", port)
 		go func() {
 			// service connections
@@ -262,7 +270,8 @@ func (w *Web) listen2(port int, cert, key string) {
 			}
 		}()
 	} else {
-		srv = &http.Server{Addr: fmt.Sprintf(":%d", port), Handler: w.Mux, TLSConfig: conf}
+		//srv = &http.Server{Addr: fmt.Sprintf(":%d", port), Handler: w.Mux, TLSConfig: conf}
+		srv = &http.Server{Addr: fmt.Sprintf(":%d", port), Handler: sessionManager(w.Mux), TLSConfig: conf}
 		lg.Info("TSL Server start with port 443 ...")
 		go func() {
 			err := srv.ListenAndServeTLS("", "")

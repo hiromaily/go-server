@@ -83,6 +83,7 @@ func initAuth() {
 
 func setMiddleware(w *web.Web) {
 	w.Use(mw.SetRequestID) //func() web.Middleware
+	w.Use(mw.SetHTTPHeader)
 	//w.Use(middleware.LogRequest(true))
 	//w.Use(middleware.ErrorHandler(w, true))
 	//w.Use(middleware.Recover())
@@ -97,9 +98,13 @@ func setRoute(w *web.Web) {
 	w.Get("/", c.GetIndex)
 	w.Get("/index", c.GetIndex)
 	w.Get("/login", c.GetLogin)
+	w.Post("/login", c.PostLogin)
 	w.Get("/global", c.GetGlobal)
 	w.Get("/webpush", c.GetWebPush)
 	w.Post("/webpush", c.PostWebPush)
+
+	//API
+
 }
 
 func main() {
