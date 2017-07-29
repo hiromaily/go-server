@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-//GET
+// GetGlobal is for /global
 func GetGlobal(res http.ResponseWriter, req *http.Request) {
 	fmt.Println("[Global]")
 	//lg.Debugf("[req]%#v\n", req)

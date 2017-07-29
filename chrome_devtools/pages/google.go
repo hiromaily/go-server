@@ -9,6 +9,7 @@ import (
 	"time"
 )
 
+// GoogleSearch is to test for Google page
 func GoogleSearch(q, text string, site, res *string) cdp.Tasks {
 	var buf []byte
 	sel := fmt.Sprintf(`//a[text()[contains(., '%s')]]`, text)

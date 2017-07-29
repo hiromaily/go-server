@@ -19,15 +19,18 @@ import (
 )
 
 type (
+	//Web is web object including Mux, Router, Middleware
 	Web struct {
 		Mux        *http.ServeMux
 		Router     map[string][]BHandler
 		Middleware []Middleware
 	}
+	//BHandler is handler path and func
 	BHandler struct {
 		Path string
 		Func http.HandlerFunc
 	}
+	//Middleware is handler func for middleware
 	Middleware func() mw.Handler
 )
 
@@ -37,6 +40,7 @@ func setProfile() {
 	runtime.SetBlockProfileRate(1)
 }
 
+// New is to create Web object
 func New() *Web {
 	web := new(Web)
 	web.Mux = http.NewServeMux()
@@ -54,10 +58,12 @@ func New() *Web {
 	return web
 }
 
+// Use is to set middleware you want
 func (w *Web) Use(m Middleware) {
 	w.Middleware = append(w.Middleware, m)
 }
 
+// AttachProfiler is for profiler pages
 func (w *Web) AttachProfiler() {
 	setProfile()
 
@@ -73,6 +79,7 @@ func (w *Web) AttachProfiler() {
 	w.Mux.Handle("/debug/pprof/block", pprof.Handler("block"))
 }
 
+// SetStaticFiles is to set static files
 func (w *Web) SetStaticFiles() {
 	//static files
 	w.Mux.Handle("/img/", http.StripPrefix("/img/", http.FileServer(http.Dir("./statics/img"))))
@@ -87,30 +94,37 @@ func faviconHandler(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, "./statics/favicon.ico")
 }
 
+// Get is to set get request
 func (w *Web) Get(path string, f http.HandlerFunc) {
 	w.Router["GET"] = append(w.Router["GET"], BHandler{Path: path, Func: f})
 }
 
+// Post is to set post request
 func (w *Web) Post(path string, f http.HandlerFunc) {
 	w.Router["POST"] = append(w.Router["POST"], BHandler{Path: path, Func: f})
 }
 
+// Put is to set put request
 func (w *Web) Put(path string, f http.HandlerFunc) {
 	w.Router["PUT"] = append(w.Router["PUT"], BHandler{Path: path, Func: f})
 }
 
+// Patch is to set patch request
 func (w *Web) Patch(path string, f http.HandlerFunc) {
 	w.Router["PATCH"] = append(w.Router["PATCH"], BHandler{Path: path, Func: f})
 }
 
+// Delete is to set delete request
 func (w *Web) Delete(path string, f http.HandlerFunc) {
 	w.Router["DELETE"] = append(w.Router["DELETE"], BHandler{Path: path, Func: f})
 }
 
+// Options is to set options request
 func (w *Web) Options(path string, f http.HandlerFunc) {
 	w.Router["OPTIONS"] = append(w.Router["OPTIONS"], BHandler{Path: path, Func: f})
 }
 
+// Head is to set head request
 func (w *Web) Head(path string, f http.HandlerFunc) {
 	w.Router["HEAD"] = append(w.Router["HEAD"], BHandler{Path: path, Func: f})
 }
@@ -133,14 +147,14 @@ func (w *Web) handler(res http.ResponseWriter, req *http.Request) {
 
 	//After middleware
 	ctx := r.Context()
-	id, err := mw.GetRequestID(ctx)
-	fmt.Printf("[%d] handler() started\n", id)
+	//id, err := mw.GetRequestID(ctx)
+	//fmt.Printf("[%d] handler() started\n", id)
 
 	//set timeout
 	ctx, cancel := context.WithTimeout(ctx, 3*time.Second)
 	defer func() {
-		id, err = mw.GetRequestID(ctx)
-		fmt.Printf("[%d] handler() ended\n", id)
+		//id, err = mw.GetRequestID(ctx)
+		//fmt.Printf("[%d] handler() ended\n", id)
 		cancel()
 	}()
 
@@ -217,7 +231,7 @@ func (w *Web) StartServer(port int, cert, key string) {
 	w.listen2(port, cert, key)
 }
 
-func getTlsConf(cert, key string) (*tls.Config, error) {
+func getTLSConf(cert, key string) (*tls.Config, error) {
 	if cert == "" || key == "" {
 		return nil, fmt.Errorf("%s", "parameters are invalid.")
 	}
@@ -258,7 +272,7 @@ func (w *Web) listen2(port int, cert, key string) {
 
 	//server object
 	var srv *http.Server
-	conf, err := getTlsConf(cert, key)
+	conf, err := getTLSConf(cert, key)
 	if err != nil {
 		//srv = &http.Server{Addr: fmt.Sprintf(":%d", port), Handler: w.Mux}
 		srv = &http.Server{Addr: fmt.Sprintf(":%d", port), Handler: sessionManager(w.Mux)}
@@ -287,6 +301,10 @@ func (w *Web) listen2(port int, cert, key string) {
 	// shut down gracefully, but wait no longer than 5 seconds before halting
 	//TODO:the cancel function returned by context.WithTimeout should be called, not discarded, to avoid a context leak
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	//defer func() {
+	//	cancel()
+	//}()
+
 	srv.Shutdown(ctx)
 	lg.Info("Server gracefully stopped")
 }

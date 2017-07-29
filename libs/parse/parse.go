@@ -7,7 +7,8 @@ import (
 	//lg "github.com/hiromaily/golibs/log"
 )
 
-func ParseJson(body io.ReadCloser, v interface{}) error {
+// JSONBody is to parse json in rquest.Body
+func JSONBody(body io.ReadCloser, v interface{}) error {
 	//lg.Debugf("[body] %v", body)
 
 	//parse

@@ -9,6 +9,7 @@ import (
 	"time"
 )
 
+// GenerateJWT is to generate jwt
 func GenerateJWT(userName string) (string, error) {
 	ti := time.Now().Add(time.Minute * 60).Unix()
 	token, err := jwt.CreateBasicToken(ti, "", userName)
@@ -20,6 +21,7 @@ func GenerateJWT(userName string) (string, error) {
 	return token, nil
 }
 
+// CheckJWT is to check jwt for api request
 func CheckJWT() Handler {
 	return func(w http.ResponseWriter, r *http.Request) (http.ResponseWriter, *http.Request) {
 		lg.Info("[CheckJWT]")

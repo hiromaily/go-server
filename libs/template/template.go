@@ -49,6 +49,7 @@ func getTempFunc() template.FuncMap {
 	return funcMap
 }
 
+// LoadTemplatesFiles is to load template files for html response
 func LoadTemplatesFiles() {
 	ext := []string{"html"}
 	//
@@ -79,6 +80,7 @@ func LoadTemplatesFiles() {
 //	return ctx
 //}
 
+// Execute is to execute template for html response
 func Execute(res http.ResponseWriter, key string, data interface{}) {
 	if tempFiles != nil {
 		err := tempFiles.ExecuteTemplate(res, key, data)

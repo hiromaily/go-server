@@ -9,6 +9,7 @@ import (
 	"time"
 )
 
+// CheckLocal is to test for local pages
 func CheckLocal(site, res *string) cdp.Tasks {
 	var buf []byte
 	//sel := fmt.Sprintf(`//a[text()[contains(., '%s')]]`, text)

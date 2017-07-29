@@ -104,10 +104,10 @@ run2:
 	sudo goserver -tsl 1
 
 exec:
-	goserver -p 8080
+	goserver -p 8080 -f ./data/config.toml
 
 exec2:
-	sudo goserver -tsl 1
+	sudo goserver -tsl 1 -f ./data/config.toml
 
 
 ###############################################################################

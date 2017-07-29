@@ -7,6 +7,7 @@ import (
 	lg "github.com/hiromaily/golibs/log"
 )
 
+// Generate is to generate session
 func Generate(r *http.Request, userID int) error {
 	err := session.RegenerateToken(r)
 	if err != nil {
@@ -21,6 +22,7 @@ func Generate(r *http.Request, userID int) error {
 	return nil
 }
 
+// Check is to check session
 func Check(r *http.Request) (int, error) {
 	// check session
 	userID, err := session.GetInt(r, "userID")

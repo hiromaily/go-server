@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-//GET
+// GetLogin is for /login page
 func GetLogin(res http.ResponseWriter, req *http.Request) {
 	lg.Info("[GetLogin]")
 	//lg.Debugf("[req]%+v\n", req)
@@ -32,7 +32,7 @@ func GetLogin(res http.ResponseWriter, req *http.Request) {
 	tm.Execute(res, "login", nil)
 }
 
-// Post
+// PostLogin is for login submit from login page
 func PostLogin(res http.ResponseWriter, req *http.Request) {
 	lg.Info("[PostLogin]")
 

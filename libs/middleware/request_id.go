@@ -9,6 +9,7 @@ import (
 
 const requestIDKey = key(42)
 
+// GetRequestID is to get request ID
 func GetRequestID(ctx context.Context) (int64, error) {
 	id, ok := ctx.Value(requestIDKey).(int64)
 	if !ok {
@@ -17,6 +18,7 @@ func GetRequestID(ctx context.Context) (int64, error) {
 	return id, nil
 }
 
+// SetRequestID is to set request ID
 func SetRequestID() Handler {
 	return func(w http.ResponseWriter, r *http.Request) (http.ResponseWriter, *http.Request) {
 		ctx := r.Context()
