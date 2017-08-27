@@ -13,6 +13,9 @@ web framework including http/2 functionalities.
 ```
 $ go get github.com/hiromaily/go-server ./...
 
+$ export ENC_KEY="xxxxxxxxxxxxxxxx"
+$ export ENC_IV="xxxxxxxxxxxxxxxx"
+
 $ docker-compose build
 $ docker-compose up
 

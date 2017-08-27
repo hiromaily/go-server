@@ -42,7 +42,10 @@ func init() {
 	flag.Parse()
 
 	//cipher
-	enc.NewCryptDefault()
+	_, err := enc.NewCryptDefault()
+	if err != nil{
+		panic(err)
+	}
 
 	// config
 	cnf := conf.New(*tomlPath, true)
