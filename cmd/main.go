@@ -43,7 +43,7 @@ func init() {
 
 	//cipher
 	_, err := enc.NewCryptDefault()
-	if err != nil{
+	if err != nil {
 		panic(err)
 	}
 

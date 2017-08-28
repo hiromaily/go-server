@@ -130,7 +130,7 @@ func (w *Web) Head(path string, f http.HandlerFunc) {
 }
 
 // endpoint of router
-func (w *Web) handler(res http.ResponseWriter, req *http.Request) {
+func (w *Web) Handler(res http.ResponseWriter, req *http.Request) {
 	lg.Debugf("Method:%s, Path:%s", req.Method, req.URL.Path)
 
 	//TODO:check file path first
@@ -226,7 +226,7 @@ func (w *Web) execMainFunc(res http.ResponseWriter, req *http.Request, ch chan<-
 
 // StartServer is to start server with setting handler
 func (w *Web) StartServer(port int, cert, key string) {
-	w.Mux.Handle("/", http.HandlerFunc(w.handler))
+	w.Mux.Handle("/", http.HandlerFunc(w.Handler))
 
 	w.listen2(port, cert, key)
 }

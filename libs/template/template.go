@@ -7,6 +7,7 @@ import (
 	"html/template"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -54,6 +55,10 @@ func LoadTemplatesFiles() {
 	ext := []string{"html"}
 	//
 	pwd, _ := os.Getwd()
+	//fmt.Println("pwd", pwd)
+	if strings.HasSuffix(pwd, "/cmd") {
+		pwd += "/.."
+	}
 	files := fl.GetFileList(pwd+"/templates/", ext)
 	//files2 := fl.GetFileList(pwd+"/submodules/global", ext)
 	//files := append(append(files1, files2...), files3...)
