@@ -1,5 +1,6 @@
 # go-server
 
+[![Build Status](https://travis-ci.org/hiromaily/go-server.svg?branch=master)](https://travis-ci.org/hiromaily/go-server)
 [![Go Report Card](https://goreportcard.com/badge/github.com/hiromaily/go-server)](https://goreportcard.com/report/github.com/hiromaily/go-server)
 [![codebeat badge](https://codebeat.co/badges/4d6a94a0-529b-43e2-88fb-bfa1b8efbdb8)](https://codebeat.co/projects/github-com-hiromaily-go-server-master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/5867b50f6ce54a668f660d78a28b1c29)](https://www.codacy.com/app/hiromaily2/go-server?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=hiromaily/go-server&amp;utm_campaign=Badge_Grade)
