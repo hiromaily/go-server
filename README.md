@@ -33,9 +33,17 @@ Headless Chromium is used for end to end testing.
 ### 3.devtool
 This is test code using [chromedp](https://github.com/knq/chromedp) on headless Chromium
 
+### 4.prometheus
+Prometheus is monitoring and alerting toolkit.  
+[Prometheus](https://prometheus.io/docs/introduction/overview/)
+
 
 ## Web
 ### functionality
 * http/2 based
 * Web Push Notifications
+
+
+## Prometheus
+[http://localhost:9090/](http://localhost:9090/)
 

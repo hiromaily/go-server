@@ -28,6 +28,14 @@ services:
     restart: always
     command: fresh -c /go/src/github.com/hiromaily/go-server/runner.conf
 
+  prometheus:
+    image: 'prom/prometheus'
+    container_name: prometheus
+    ports:
+      - "${PROM_PORT:-9090}:9090"
+    volumes:
+      - ./data/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+
   headless:
     image: 'knqz/chrome-headless'
     container_name: chrome-headless
