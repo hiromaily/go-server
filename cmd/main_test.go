@@ -21,7 +21,8 @@ var getTests = []struct {
 }{
 	{"/", http.StatusOK, "GET", false},
 	{"/index", http.StatusOK, "GET", false},
-	{"/login", http.StatusInternalServerError, "GET", false},
+	//{"/login", http.StatusInternalServerError, "GET", false},
+	{"/login", http.StatusOK, "GET", false},
 	{"/global", http.StatusOK, "GET", false},
 	{"/webpush", http.StatusOK, "GET", false},
 }

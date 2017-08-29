@@ -18,11 +18,11 @@ func GetLogin(res http.ResponseWriter, req *http.Request) {
 
 	// TODO:check sssion for login
 	userID, err := ss.Check(req)
-	if err != nil {
-		lg.Error(err)
-		http.Error(res, err.Error(), 500)
-	}
-	if userID != 0 {
+	//if err != nil {
+	//	lg.Error(err)
+	//	http.Error(res, err.Error(), 500)
+	//}
+	if err == nil && userID != 0 {
 		//redirect
 		http.Redirect(res, req, "/global", http.StatusTemporaryRedirect) //307
 		return
