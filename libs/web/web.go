@@ -299,11 +299,8 @@ func (w *Web) listen2(port int, cert, key string) {
 	lg.Info("Shutting down server...")
 
 	// shut down gracefully, but wait no longer than 5 seconds before halting
-	//TODO:the cancel function returned by context.WithTimeout should be called, not discarded, to avoid a context leak
-	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
-	//defer func() {
-	//	cancel()
-	//}()
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
 
 	srv.Shutdown(ctx)
 	lg.Info("Server gracefully stopped")
