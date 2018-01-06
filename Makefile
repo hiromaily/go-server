@@ -58,6 +58,10 @@ chk:
 up:
 	docker-compose up
 
+up2:
+	docker-compose up web
+
+
 serverin:
 	docker exec -it go-server bash -c "echo ${GOROOT}"
 
@@ -84,10 +88,10 @@ keygen:
 # Build Local
 ###############################################################################
 bld:
-	go build -i -v -o ${GOPATH}/bin/goserver ./cmd/
+	go build -i -race -v -o ${GOPATH}/bin/goserver ./cmd/
 
 bld2:
-	go build -i -v -o ${GOPATH}/bin/devtool ./chrome_devtools/
+	go build -i -race -v -o ${GOPATH}/bin/devtool ./chrome_devtools/
 
 
 ###############################################################################
@@ -95,12 +99,12 @@ bld2:
 ###############################################################################
 run:
 	go run ./cmd/main.go -p 8080 -f ./data/config.toml
-	#go build -i -v -o ${GOPATH}/bin/goserver ./cmd/
+	#go build -i -race -v -o ${GOPATH}/bin/goserver ./cmd/
 	#goserver -p 8080 -f data/config.toml
 
 run2:
 	#sudo go run ./cmd/main.go
-	go build -i -v -o ${GOPATH}/bin/goserver ./cmd/
+	go build -i -race -v -o ${GOPATH}/bin/goserver ./cmd/
 	sudo goserver -tsl 1
 
 exec:
@@ -138,7 +142,7 @@ devtool:
 	docker exec -it devtool bash -c "devtool -d headless -n localhost -h chrome-headless"
 
 devtoolbld:
-	docker exec -it devtool bash -c "CGO_ENABLED=0 GOOS=linux go build -o /go/bin/devtool ./main.go"
+	docker exec -it devtool bash -c "CGO_ENABLED=0 GOOS=linux go build -race -o /go/bin/devtool ./main.go"
 
 devtoolin:
 	docker exec -it devtool bash
