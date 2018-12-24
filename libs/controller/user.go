@@ -45,7 +45,7 @@ func PostLogin(res http.ResponseWriter, req *http.Request) {
 
 	//session
 	var dummyUserID = u.GenerateRandam(1, 99999)
-	ss.Generate(req, dummyUserID)
+	ss.Generate(res, req, dummyUserID)
 
 	//redirect (TODO:needed Get to Post)
 	//FIXME:Browser request cache data when redirecting at status code 301

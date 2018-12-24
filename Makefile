@@ -90,8 +90,8 @@ keygen:
 bld:
 	go build -i -race -v -o ${GOPATH}/bin/goserver ./cmd/
 
-bld2:
-	go build -i -race -v -o ${GOPATH}/bin/devtool ./chrome_devtools/
+#bld2:
+#	go build -i -race -v -o ${GOPATH}/bin/devtool ./chrome_devtools/
 
 
 ###############################################################################

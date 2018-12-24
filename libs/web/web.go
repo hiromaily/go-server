@@ -4,9 +4,6 @@ import (
 	"context"
 	"crypto/tls"
 	"fmt"
-	c "github.com/hiromaily/go-server/libs/controller"
-	mw "github.com/hiromaily/go-server/libs/middleware"
-	lg "github.com/hiromaily/golibs/log"
 	"net/http"
 	"net/http/pprof"
 	"os"
@@ -14,8 +11,10 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/alexedwards/scs/engine/memstore"
-	"github.com/alexedwards/scs/session"
+	c "github.com/hiromaily/go-server/libs/controller"
+	mw "github.com/hiromaily/go-server/libs/middleware"
+	"github.com/hiromaily/go-server/libs/session"
+	lg "github.com/hiromaily/golibs/log"
 )
 
 type (
@@ -267,15 +266,16 @@ func (w *Web) listen2(port int, cert, key string) {
 	w.displayPaths()
 
 	// session
-	engine := memstore.New(0)
-	sessionManager := session.Manage(engine)
+	sessionManager := session.GetSessionMgr()
 
 	//server object
 	var srv *http.Server
 	conf, err := getTLSConf(cert, key)
 	if err != nil {
 		//srv = &http.Server{Addr: fmt.Sprintf(":%d", port), Handler: w.Mux}
-		srv = &http.Server{Addr: fmt.Sprintf(":%d", port), Handler: sessionManager(w.Mux)}
+		//srv = &http.Server{Addr: fmt.Sprintf(":%d", port), Handler: sessionManager(w.Mux)}
+		srv = &http.Server{Addr: fmt.Sprintf(":%d", port), Handler: sessionManager.Use(w.Mux)}
+
 		lg.Infof("Server start with port %d ...", port)
 		go func() {
 			// service connections
@@ -285,7 +285,8 @@ func (w *Web) listen2(port int, cert, key string) {
 		}()
 	} else {
 		//srv = &http.Server{Addr: fmt.Sprintf(":%d", port), Handler: w.Mux, TLSConfig: conf}
-		srv = &http.Server{Addr: fmt.Sprintf(":%d", port), Handler: sessionManager(w.Mux), TLSConfig: conf}
+		//srv = &http.Server{Addr: fmt.Sprintf(":%d", port), Handler: sessionManager(w.Mux), TLSConfig: conf}
+		srv = &http.Server{Addr: fmt.Sprintf(":%d", port), Handler: sessionManager.Use(w.Mux), TLSConfig: conf}
 		lg.Info("TSL Server start with port 443 ...")
 		go func() {
 			err := srv.ListenAndServeTLS("", "")

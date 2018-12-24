@@ -36,27 +36,27 @@ services:
     volumes:
       - ./data/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
 
-  headless:
-    image: 'knqz/chrome-headless'
-    container_name: chrome-headless
-    ports:
-      - "${HEADLESS_PORT:-9222}:9222"
-
-  devtool:
-    build:
-      context: ./chrome_devtools/
-      dockerfile: Dockerfile
-    image: 'devtool:${IMAGE_TAG:-1.0}'
-    container_name: devtool
-    volumes:
-      #- ./data/images:/workspace/images
-      - ./chrome_devtools:/go/src/github.com/hiromaily/go-server/chrome_devtools
-    links:
-      - headless:chrome-headless
-      - web
-    depends_on:
-      - headless
-      - web
-    stdin_open: true
-    tty: true
-    command: bash
+#  headless:
+#    image: 'knqz/chrome-headless'
+#    container_name: chrome-headless
+#    ports:
+#      - "${HEADLESS_PORT:-9222}:9222"
+#
+#  devtool:
+#    build:
+#      context: ./chrome_devtools/
+#      dockerfile: Dockerfile
+#    image: 'devtool:${IMAGE_TAG:-1.0}'
+#    container_name: devtool
+#    volumes:
+#      #- ./data/images:/workspace/images
+#      - ./chrome_devtools:/go/src/github.com/hiromaily/go-server/chrome_devtools
+#    links:
+#      - headless:chrome-headless
+#      - web
+#    depends_on:
+#      - headless
+#      - web
+#    stdin_open: true
+#    tty: true
+#    command: bash

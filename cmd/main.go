@@ -2,6 +2,9 @@ package main
 
 import (
 	"flag"
+	"os"
+	"path/filepath"
+
 	conf "github.com/hiromaily/go-server/libs/config"
 	c "github.com/hiromaily/go-server/libs/controller"
 	mw "github.com/hiromaily/go-server/libs/middleware"
@@ -10,8 +13,6 @@ import (
 	"github.com/hiromaily/golibs/auth/jwt"
 	enc "github.com/hiromaily/golibs/cipher/encryption"
 	lg "github.com/hiromaily/golibs/log"
-	"os"
-	"path/filepath"
 )
 
 //TODO:LIST
@@ -51,8 +52,8 @@ func init() {
 	cnf := conf.New(*tomlPath, true)
 
 	//log
-	lg.InitializeLog(cnf.Server.Log.Level, lg.LogOff, 99, "[GO-SERVER]",
-		cnf.Server.Log.Path)
+	lg.InitializeLog(lg.LogStatus(cnf.Server.Log.Level), lg.TimeShortFile, "[GO-SERVER]",
+		cnf.Server.Log.Path, "hiromaily")
 
 	//For TSL
 	if *tsl != 0 {

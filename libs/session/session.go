@@ -3,19 +3,23 @@ package session
 import (
 	"net/http"
 
-	"github.com/alexedwards/scs/session"
+	"github.com/alexedwards/scs"
 	lg "github.com/hiromaily/golibs/log"
 )
 
+var sessionManager = scs.NewCookieManager("u46IpCV9y5Vlur8YvODJEhgOY8m9JVE4")
+
+func GetSessionMgr() *scs.Manager {
+	return sessionManager
+}
+
 // Generate is to generate session
-func Generate(r *http.Request, userID int) error {
-	err := session.RegenerateToken(r)
-	if err != nil {
-		return err
-	}
+func Generate(w http.ResponseWriter, r *http.Request, userID int) error {
+	//session
+	session := sessionManager.Load(r)
 
 	// Then make the privilege-level change.
-	err = session.PutInt(r, "userID", userID)
+	err := session.PutInt(w, "userID", userID)
 	if err != nil {
 		return err
 	}
@@ -25,7 +29,8 @@ func Generate(r *http.Request, userID int) error {
 // Check is to check session
 func Check(r *http.Request) (int, error) {
 	// check session
-	userID, err := session.GetInt(r, "userID")
+	session := sessionManager.Load(r)
+	userID, err := session.GetInt("userID")
 	if err != nil {
 		return 0, err
 	}

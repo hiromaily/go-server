@@ -19,7 +19,7 @@ import (
 	"encoding/json"
 	"log"
 
-	webpush "github.com/sherclockholmes/webpush-go"
+	webpush "github.com/SherClockHolmes/webpush-go"
 )
 
 const (
@@ -68,7 +68,7 @@ if err != nil {
 For more information visit these [Google Developers](https://developers.google.com/web) links:
 
 [https://developers.google.com/web/updates/2016/03/web-push-encryption](https://developers.google.com/web/updates/2016/03/web-push-encryption)  
-[https://developers.google.com/web/updates/2016/07/web-push-interop-wins](https://developers.google.com/web/updates/2016/03/web-push-encryption)
+[https://developers.google.com/web/updates/2016/07/web-push-interop-wins](https://developers.google.com/web/updates/2016/07/web-push-interop-wins)
 
 ### Similar Projects / Inspired By
 

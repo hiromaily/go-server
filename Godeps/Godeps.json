@@ -1,285 +1,86 @@
 {
 	"ImportPath": "github.com/hiromaily/go-server",
-	"GoVersion": "go1.9",
-	"GodepVersion": "v79",
+	"GoVersion": "go1.11",
+	"GodepVersion": "v80",
 	"Packages": [
 		"./..."
 	],
 	"Deps": [
 		{
 			"ImportPath": "github.com/BurntSushi/toml",
-			"Comment": "v0.3.0-7-ga368813",
-			"Rev": "a368813c5e648fee92e5f6c30e3944ff9d5e8895"
+			"Comment": "v0.3.1",
+			"Rev": "3012a1dbe2e4bd1391d42b32f0577cb7bbc7f005"
 		},
 		{
-			"ImportPath": "github.com/alexedwards/scs/engine/memstore",
-			"Comment": "v0.1.1",
-			"Rev": "0fdd3ef0cedf798548a2a904932bc0b4e13ee91b"
+			"ImportPath": "github.com/alexedwards/scs",
+			"Comment": "v1.4.0",
+			"Rev": "cac921d76a577e6c80f3f6bc0857b8eeb650669e"
 		},
 		{
-			"ImportPath": "github.com/alexedwards/scs/session",
-			"Comment": "v0.1.1",
-			"Rev": "0fdd3ef0cedf798548a2a904932bc0b4e13ee91b"
+			"ImportPath": "github.com/alexedwards/scs/stores/cookiestore",
+			"Comment": "v1.4.0",
+			"Rev": "cac921d76a577e6c80f3f6bc0857b8eeb650669e"
 		},
 		{
 			"ImportPath": "github.com/dgrijalva/jwt-go",
-			"Comment": "v3.0.0-20-ga539ee1",
-			"Rev": "a539ee1a749a2b895533f979515ac7e6e0f5b650"
-		},
-		{
-			"ImportPath": "github.com/disintegration/imaging",
-			"Comment": "v1.2.1",
-			"Rev": "a5858022df0e1734a59f973fffe3f87b51c087ed"
-		},
-		{
-			"ImportPath": "github.com/gorilla/websocket",
-			"Comment": "v1.2.0-6-ga69d9f6",
-			"Rev": "a69d9f6de432e2c6b296a947d8a5ee88f68522cf"
+			"Comment": "v3.2.0-4-g3af4c74",
+			"Rev": "3af4c746e1c248ee8491a3e0c6f7a9cd831e95f8"
 		},
 		{
 			"ImportPath": "github.com/hiromaily/golibs/auth/jwt",
-			"Rev": "bc47148b5cf9f14f77f65817bdd7e52eb519a464"
+			"Rev": "bc9796c64b32361297f00e65ab02fd02940916c7"
 		},
 		{
 			"ImportPath": "github.com/hiromaily/golibs/cipher/encryption",
-			"Rev": "bc47148b5cf9f14f77f65817bdd7e52eb519a464"
+			"Rev": "bc9796c64b32361297f00e65ab02fd02940916c7"
+		},
+		{
+			"ImportPath": "github.com/hiromaily/golibs/color",
+			"Rev": "bc9796c64b32361297f00e65ab02fd02940916c7"
 		},
 		{
 			"ImportPath": "github.com/hiromaily/golibs/files",
-			"Rev": "bc47148b5cf9f14f77f65817bdd7e52eb519a464"
+			"Rev": "bc9796c64b32361297f00e65ab02fd02940916c7"
 		},
 		{
 			"ImportPath": "github.com/hiromaily/golibs/log",
-			"Rev": "bc47148b5cf9f14f77f65817bdd7e52eb519a464"
+			"Rev": "bc9796c64b32361297f00e65ab02fd02940916c7"
 		},
 		{
 			"ImportPath": "github.com/hiromaily/golibs/regexp",
-			"Rev": "bc47148b5cf9f14f77f65817bdd7e52eb519a464"
+			"Rev": "bc9796c64b32361297f00e65ab02fd02940916c7"
 		},
 		{
-			"ImportPath": "github.com/hiromaily/golibs/time",
-			"Rev": "bc47148b5cf9f14f77f65817bdd7e52eb519a464"
+			"ImportPath": "github.com/hiromaily/golibs/runtimes",
+			"Rev": "bc9796c64b32361297f00e65ab02fd02940916c7"
 		},
 		{
 			"ImportPath": "github.com/hiromaily/golibs/utils",
-			"Rev": "bc47148b5cf9f14f77f65817bdd7e52eb519a464"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/cdp",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/cdp/accessibility",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/cdp/animation",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/cdp/applicationcache",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/cdp/audits",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/cdp/browser",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/cdp/cachestorage",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/cdp/cdputil",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/cdp/css",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/cdp/database",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/cdp/debugger",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/cdp/dom",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/cdp/domdebugger",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/cdp/domsnapshot",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/cdp/domstorage",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/cdp/emulation",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/cdp/heapprofiler",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/cdp/indexeddb",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/cdp/input",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/cdp/inspector",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/cdp/io",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/cdp/layertree",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/cdp/log",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/cdp/memory",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/cdp/network",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/cdp/overlay",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/cdp/page",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/cdp/performance",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/cdp/profiler",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/cdp/runtime",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/cdp/schema",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/cdp/security",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/cdp/serviceworker",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/cdp/storage",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/cdp/systeminfo",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/cdp/target",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/cdp/tethering",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/cdp/tracing",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/client",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/kb",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/chromedp/runner",
-			"Rev": "50c2d576db8913bb0f0d29dc148a1d8886c11c80"
-		},
-		{
-			"ImportPath": "github.com/knq/sysutil",
-			"Rev": "53c4155f11f69acc282e07ed0b9df3fab4874eb1"
-		},
-		{
-			"ImportPath": "github.com/mailru/easyjson",
-			"Rev": "3b3bbef4e2d9a6f24d7ee73a894afbc064f0e057"
-		},
-		{
-			"ImportPath": "github.com/mailru/easyjson/buffer",
-			"Rev": "3b3bbef4e2d9a6f24d7ee73a894afbc064f0e057"
-		},
-		{
-			"ImportPath": "github.com/mailru/easyjson/jlexer",
-			"Rev": "3b3bbef4e2d9a6f24d7ee73a894afbc064f0e057"
-		},
-		{
-			"ImportPath": "github.com/mailru/easyjson/jwriter",
-			"Rev": "3b3bbef4e2d9a6f24d7ee73a894afbc064f0e057"
-		},
-		{
-			"ImportPath": "github.com/patrickmn/go-cache",
-			"Comment": "v2.0.0-11-ga3647f8",
-			"Rev": "a3647f8e31d79543b2d0f0ae2fe5c379d72cedc0"
+			"Rev": "bc9796c64b32361297f00e65ab02fd02940916c7"
 		},
 		{
 			"ImportPath": "github.com/sherclockholmes/webpush-go",
-			"Rev": "739e7e5e1952b73b52f6f5ce711d800f8c133f23"
-		},
-		{
-			"ImportPath": "github.com/shiena/ansicolor",
-			"Rev": "a422bbe96644373c5753384a59d678f7d261ff10"
+			"Rev": "52c6af17b8d924a03af32c85ffe7077b162e3dec"
 		},
 		{
 			"ImportPath": "golang.org/x/crypto/hkdf",
-			"Rev": "81e90905daefcd6fd217b62423c0908922eadb30"
+			"Rev": "505ab145d0a99da450461ae2c1a9f6cd10d1f447"
 		},
 		{
-			"ImportPath": "golang.org/x/image/bmp",
-			"Rev": "426cfd8eeb6e08ab1932954e09e3c2cb2bc6e36d"
+			"ImportPath": "golang.org/x/crypto/internal/subtle",
+			"Rev": "505ab145d0a99da450461ae2c1a9f6cd10d1f447"
 		},
 		{
-			"ImportPath": "golang.org/x/image/tiff",
-			"Rev": "426cfd8eeb6e08ab1932954e09e3c2cb2bc6e36d"
+			"ImportPath": "golang.org/x/crypto/nacl/secretbox",
+			"Rev": "505ab145d0a99da450461ae2c1a9f6cd10d1f447"
 		},
 		{
-			"ImportPath": "golang.org/x/image/tiff/lzw",
-			"Rev": "426cfd8eeb6e08ab1932954e09e3c2cb2bc6e36d"
+			"ImportPath": "golang.org/x/crypto/poly1305",
+			"Rev": "505ab145d0a99da450461ae2c1a9f6cd10d1f447"
+		},
+		{
+			"ImportPath": "golang.org/x/crypto/salsa20/salsa",
+			"Rev": "505ab145d0a99da450461ae2c1a9f6cd10d1f447"
 		}
 	]
 }
