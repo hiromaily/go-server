@@ -4,7 +4,7 @@
 # PKG Dependencies
 ###############################################################################
 update:
-	go get -u github.com/golang/dep/...
+	go get -u github.com/golang/dep/cmd/dep
 	go get -u github.com/rakyll/hey
 	go get -u github.com/davecheney/httpstat
 	go get -u github.com/client9/misspell/cmd/misspell
@@ -14,16 +14,16 @@ update:
 	go get -u github.com/alecthomas/gometalinter
 	#gometalinter --install
 
-	go get -d -v ./cmd/
+	go get -u -d -v ./...
 
 depinit:
-	cd cmd/;dep init
+	dep init
 
 dep:
-	cd cmd/;dep ensure -update
+	dep ensure
 
 depcln:
-	cd cmd/;rm -rf vendor lock.json manifest.json
+	rm -rf vendor Gopkg.lock Gopkg.toml
 
 
 ###############################################################################
@@ -112,20 +112,6 @@ exec:
 
 exec2:
 	sudo goserver -tsl 1 -f ./data/config.toml
-
-
-###############################################################################
-# Managing Dependencies
-###############################################################################
-update2:
-	go get -u github.com/tools/godep
-	go get -u -d -v ./...
-
-godep:
-	rm -rf Godeps
-	rm -rf ./vendor
-	godep save ./...
-
 
 
 ###############################################################################

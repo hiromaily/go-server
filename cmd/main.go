@@ -43,7 +43,7 @@ func init() {
 	flag.Parse()
 
 	//cipher
-	_, err := enc.NewCryptDefault()
+	_, err := enc.NewCryptWithEnv()
 	if err != nil {
 		panic(err)
 	}
