@@ -1,4 +1,4 @@
-FROM golang:1.9
+FROM golang:1.11.5
 
 #RUN echo $GOPATH => /go
 ARG encKey
