@@ -8,7 +8,8 @@ port = 8080
 
 [server.log]
 level = 1
-path = "/var/log/go/go-server.log"
+#path = "/var/log/go/go-server.log"
+path = ""
 
 [server.session]
 name = "go-server"
