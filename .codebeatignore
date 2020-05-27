@@ -1,3 +1,2 @@
 data/**
-statics/**
-runner.conf
+web/statics/**

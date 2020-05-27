@@ -1,4 +1,4 @@
-version: '3.0'
+version: '3.7'
 
 services:
   web:
@@ -16,47 +16,19 @@ services:
     ports:
       - "${API_PORT:-8080}:8080"
     volumes:
-      - ./data/ssl:/go/src/github.com/hiromaily/go-server/data/ssl
-      - ./runner.conf:/go/src/github.com/hiromaily/go-server/runner.conf
       - ./cmd:/go/src/github.com/hiromaily/go-server/cmd
-      - ./controller:/go/src/github.com/hiromaily/go-server/controller
-      - ./libs:/go/src/github.com/hiromaily/go-server/libs
-      - ./templates:/go/src/github.com/hiromaily/go-server/templates
-      - ./statics:/go/src/github.com/hiromaily/go-server/statics
+      - ./data/ssl:/go/src/github.com/hiromaily/go-server/data/ssl
+      - ./pkg:/go/src/github.com/hiromaily/go-server/pkg
+      - ./web:/go/src/github.com/hiromaily/go-server/web
     stdin_open: true
     tty: true
     restart: always
-    command: fresh -c /go/src/github.com/hiromaily/go-server/runner.conf
+    command: go-server -p 8080
 
-  prometheus:
-    image: 'prom/prometheus'
-    container_name: prometheus
-    ports:
-      - "${PROM_PORT:-9090}:9090"
-    volumes:
-      - ./data/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-
-#  headless:
-#    image: 'knqz/chrome-headless'
-#    container_name: chrome-headless
+#  prometheus:
+#    image: 'prom/prometheus'
+#    container_name: prometheus
 #    ports:
-#      - "${HEADLESS_PORT:-9222}:9222"
-#
-#  devtool:
-#    build:
-#      context: ./chrome_devtools/
-#      dockerfile: Dockerfile
-#    image: 'devtool:${IMAGE_TAG:-1.0}'
-#    container_name: devtool
+#      - "${PROM_PORT:-9090}:9090"
 #    volumes:
-#      #- ./data/images:/workspace/images
-#      - ./chrome_devtools:/go/src/github.com/hiromaily/go-server/chrome_devtools
-#    links:
-#      - headless:chrome-headless
-#      - web
-#    depends_on:
-#      - headless
-#      - web
-#    stdin_open: true
-#    tty: true
-#    command: bash
+#      - ./data/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml

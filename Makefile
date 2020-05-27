@@ -4,94 +4,36 @@
 # PKG Dependencies
 ###############################################################################
 update:
-	go get -u github.com/golang/dep/cmd/dep
 	go get -u github.com/rakyll/hey
 	go get -u github.com/davecheney/httpstat
-	go get -u github.com/client9/misspell/cmd/misspell
-	go get -u github.com/gordonklaus/ineffassign
-	go get -u github.com/pilu/fresh
-
-	go get -u github.com/alecthomas/gometalinter
-	#gometalinter --install
-
 	go get -u -d -v ./...
 
-depinit:
-	dep init
 
-dep:
-	dep ensure
-
-depcln:
-	rm -rf vendor Gopkg.lock Gopkg.toml
-
-
-###############################################################################
-# Golang formatter and detection
-###############################################################################
-fmt:
-	go fmt `go list ./... | grep -v '/vendor/'`
-
-vet:
-	go vet `go list ./... | grep -v '/vendor/'`
-
-fix:
-	go fix `go list ./... | grep -v '/vendor/'`
-
-lint:
-	golint ./... | grep -v '^vendor\/' || true
-	misspell `find . -name "*.go" | grep -v '/vendor/'`
-	ineffassign .
-
-chk:
-	go fmt `go list ./... | grep -v '/vendor/'`
-	go vet `go list ./... | grep -v '/vendor/'`
-	go fix `go list ./... | grep -v '/vendor/'`
-	golint ./... | grep -v '^vendor\/' || true
-	misspell `find . -name "*.go" | grep -v '/vendor/'`
-	ineffassign .
-
-
-###############################################################################
-# Docker
-###############################################################################
-up:
-	docker-compose up
-
-up2:
-	docker-compose up web
-
-
-serverin:
-	docker exec -it go-server bash -c "echo ${GOROOT}"
-
-up_product:
-	docker-compose -f docker-compose.yml up
-
-dcbld:
-	docker-compose build --no-cache
-
-
-###############################################################################
-# Initial Settings
-###############################################################################
 keygen:
 	sudo go run ${GOROOT}/src/crypto/tls/generate_cert.go --host hy
 	#sudo go run /usr/local/Cellar/go/1.8/libexec/src/crypto/tls/generate_cert.go --host hy
 
-#submodule:
-#    git submodule add https://github.com/BuckyMaler/global.git submodules/global
-#	#ln -s ${GOPATH}/src/github.com/hiromaily/go-goa/goa/swagger ./public/swagger
+###############################################################################
+# Golang formatter and detection
+###############################################################################
+.PHONY: imports
+imports:
+	./scripts/imports.sh
+
+.PHONY: lint
+lint:
+	golangci-lint run
+
+.PHONY: lintfix
+lintfix:
+	golangci-lint run --fix
 
 
 ###############################################################################
 # Build Local
 ###############################################################################
 bld:
-	go build -i -race -v -o ${GOPATH}/bin/goserver ./cmd/
-
-#bld2:
-#	go build -i -race -v -o ${GOPATH}/bin/devtool ./chrome_devtools/
+	go build -i -v -o ${GOPATH}/bin/goserver ./cmd/
 
 
 ###############################################################################
@@ -112,6 +54,26 @@ exec:
 
 exec2:
 	sudo goserver -tsl 1 -f ./data/config.toml
+
+
+###############################################################################
+# Docker
+###############################################################################
+up:
+	docker-compose up
+
+up2:
+	docker-compose up web
+
+
+serverin:
+	docker exec -it go-server bash -c "echo ${GOROOT}"
+
+up_product:
+	docker-compose -f docker-compose.yml up
+
+dcbld:
+	docker-compose build --no-cache
 
 
 ###############################################################################

@@ -6,10 +6,12 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
+
 	//"reflect"
-	"github.com/hiromaily/go-server/libs/web"
 	"testing"
 	"time"
+
+	"github.com/hiromaily/go-server/pkg/web"
 )
 
 var ts *httptest.Server
